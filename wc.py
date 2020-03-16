@@ -1,5 +1,6 @@
 import os
-
+import tkinter
+import re 
 
 class text_count():
 
@@ -8,6 +9,7 @@ class text_count():
 
     def char_count(self):
         # 统计字符数 -c
+        context = ''
         file_object = open(self.path, 'r', encoding='UTF-8')
         context = file_object.read()
         context = context.replace(' ', '')
@@ -54,17 +56,20 @@ class text_count():
         
 
 
-def handle_files(father_path, all_files, all_path):
+def handle_files(father_path, all_files, all_path,word):
     # 递归返回目录下符合条件的文件路径。-s
+    
+    reg = re.compile(word)
     file_list = os.listdir(father_path)
     for file in file_list:
         cur_path = os.path.join(father_path, file)
         # 判断是否是文件夹
         if os.path.isdir(cur_path):
-            handle_files(cur_path, all_files, all_path)
+            handle_files(cur_path, all_files, all_path,word)
         elif os.path.isfile(cur_path):
-            all_path.append(cur_path)
-            all_files.append(file)
+            if reg.search(file) != None :
+                all_path.append(cur_path)
+                all_files.append(file)
 
 
 def base_orders(w_c, words):
@@ -81,13 +86,17 @@ def base_orders(w_c, words):
 
 def more_orders(words):
     # 处理-s,-x命令
-
-    if '-s' in words:
+    if '-x' in words:
+        pass
+    elif '-s' in words:
         i = 0
         all_files = []
         all_path = []
+        word = words[-1]
+        word = word.replace('*','.*')
+        word = word.replace('?','.?')
         father_path = os.path.split(os.path.abspath('wc.py'))[0]
-        handle_files(father_path, all_files, all_path)
+        handle_files(father_path, all_files, all_path,word)
         for file in all_files:
             if os.path.splitext(file)[-1] == os.path.splitext(words[-1])[-1]:
                 print(file + ':')
@@ -105,6 +114,7 @@ def main():
     """主函数"""
     # 存储参数
     words = input("请输入命令和文件路径:").split()
+    
     more_orders(words)
 
 
