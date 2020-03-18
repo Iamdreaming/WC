@@ -1,5 +1,6 @@
+
 import os
-import tkinter
+import wx
 import re 
 
 class text_count():
@@ -9,8 +10,7 @@ class text_count():
 
     def char_count(self):
         # 统计字符数 -c
-        context = ''
-        file_object = open(self.path, 'r', encoding='UTF-8')
+        file_object = open(self.path, 'r')
         context = file_object.read()
         context = context.replace(' ', '')
         context = context.replace('\n', '')
@@ -97,12 +97,11 @@ def more_orders(words):
         word = word.replace('?','.?')
         father_path = os.path.split(os.path.abspath('wc.py'))[0]
         handle_files(father_path, all_files, all_path,word)
-        for file in all_files:
-            if os.path.splitext(file)[-1] == os.path.splitext(words[-1])[-1]:
-                print(file + ':')
-                w_c = text_count(all_path[i])
-                base_orders(w_c, words)
-                print()
+        for file in all_files:           
+            print(file + ':')
+            w_c = text_count(all_path[i])
+            base_orders(w_c, words)
+            print()
             i += 1
     else:
         w_c = text_count(words[-1])
