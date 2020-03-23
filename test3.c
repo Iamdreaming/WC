@@ -1,10 +1,7 @@
-#include <stdio.h>
+hello world
+
+//Hello world
+
 /*
-test
+Hello world
 */
-
-//一个简单的HelloWorld程序
-void main():{
-    print('HelloWorld')
-
-}//结束应用
