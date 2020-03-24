@@ -1,3 +1,13 @@
+'''
+@Descripttion: wc.exe功能模拟
+@version: 1.0
+@Author: 陈锐填
+@Date: 2020-03-15 13:57:31
+@LastEditors: 陈锐填
+@LastEditTime: 2020-03-24 17:03:58
+'''
+
+
 import os
 import re
 import time
@@ -20,19 +30,19 @@ class text_count():
         context = context.replace(' ', '')
         context = context.replace('\n', '')
         string = "字符数为"+str(len(context))
-        print(string)
+        return string
 
     def words_count(self):
         # 统计单词数 -w
         reg = re.compile(r'\w+')
-        file_object = open(self.path, 'r',encoding= 'utf-8')
+        file_object = open(self.path, 'r', encoding='utf-8')
         context = file_object.read()
         words = context.split()
         for word in words:
             if reg.search(word) == None:
                 words.remove(word)
         string = '单词个数为' + str(len(words))
-        print(string)
+        return string
 
     def lines_count(self):
         # 统计行数 -l
@@ -41,7 +51,7 @@ class text_count():
         for line in file_object.readlines():
             count += 1
         string = '行数为' + str(count)
-        print(string)
+        return string
 
     def more_information(self):
         # 返回更复杂的数据（代码行 / 空行 / 注释行） -a
@@ -195,8 +205,9 @@ class Order():
 
     def senior_orders(self, words):
         # 处理-s命令，当不存在-c命令时执行base_order
-
-        if '-s' in words:
+        if os.path.exists(words[-1]) == False and '-s' not in words:
+            print('请正确输入\n')
+        elif '-s' in words:
             i = 0
             all_files = []
             all_path = []
@@ -231,10 +242,12 @@ class Order():
         else:
             self.senior_orders(words)
 
+
 def help_order():
-    file_name = open('help.txt', 'r',encoding= 'utf-8')
+    file_name = open('help.txt', 'r', encoding='utf-8')
     print(file_name.read())
     print()
+
 
 def main():
     """主函数"""
@@ -243,9 +256,14 @@ def main():
     # 存储参数
     while True:
         words = input("请输入命令和文件路径:").split()
-        if '-h' in words:
+        words.insert(0, 'none')
+        if len(words) == 1:
+            print('请正确输入')
+        elif '-h' in words:
             help_order()
-        else :
+        elif '-q' in words:
+            exit()
+        else:
             order = Order()
             order.gui_order(words)
 
