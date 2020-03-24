@@ -2,6 +2,7 @@
     -c file.c    //返回文件 file.c 的字符数
     -w file.c    //返回文件 file.c 的词的数目  
     -l file.c    //返回文件 file.c 的行数
+    -q 退出程序
 
 扩展功能：
     -h   查看说明
